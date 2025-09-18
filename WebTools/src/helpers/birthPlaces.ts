@@ -48,6 +48,12 @@ export class HeritageTraits {
     static Lub = "Lub";
     static Missionary = "Missionary";
     static Vagrant = "Vagrant";
+    static Laowai = "Laowai";
+    static Shualài = "Shualài";
+    static Guanxi = "Guanxi";
+    static Chinese = "Chinese";
+    static Party = "Party";
+    static Imperial = "Imperial";
 }
 
 export class BirthPlaces {
@@ -424,6 +430,56 @@ export class BirthPlaces {
             else if (birthPlace.name === "Human Edge" || birthPlace.name === "Sol/Sol Orbitals") {
                 character.heritageTrait = HeritageTraits.Vagrant;
             }
+        }
+
+        //YuJing
+        if (character.hasSource(Source.YuJing) && character.faction === Faction.YuJing) {
+            const roll = Math.floor(Math.random() * 20) + 1;
+            switch (birthPlace.name){
+                case "Shentang":
+                    if (roll < 3) character.heritageTrait = HeritageTraits.Laowai;
+                    else if (roll < 6) character.heritageTrait = HeritageTraits.Shualài;
+                    else if (roll < 18) character.heritageTrait = HeritageTraits.Guanxi;
+                    else if (roll < 20) character.heritageTrait = HeritageTraits.Chinese;
+                    else character.heritageTrait = HeritageTraits.Party;
+                    break;
+                case "Yutang":
+                    if (roll < 3) character.heritageTrait = HeritageTraits.Shualài;
+                    else if (roll < 6) character.heritageTrait = HeritageTraits.Guanxi;
+                    else if (roll < 18) character.heritageTrait = HeritageTraits.Chinese;
+                    else if (roll < 20) character.heritageTrait = HeritageTraits.Party;
+                    else character.heritageTrait = HeritageTraits.Imperial;
+                    break;
+                case "Sol (Chung Kuo)":
+                    if (roll < 3) character.heritageTrait = HeritageTraits.Laowai;
+                    else if (roll < 6) character.heritageTrait = HeritageTraits.Shualài;
+                    else if (roll < 12) character.heritageTrait = HeritageTraits.Guanxi;
+                    else if (roll < 20) character.heritageTrait = HeritageTraits.Chinese;
+                    else character.heritageTrait = HeritageTraits.Party;
+                    break;
+                case "Paradiso":
+                    if (roll < 3) character.heritageTrait = HeritageTraits.Laowai;
+                    else if (roll < 6) character.heritageTrait = HeritageTraits.Shualài;
+                    else if (roll < 12) character.heritageTrait = HeritageTraits.Guanxi;
+                    else if (roll < 20) character.heritageTrait = HeritageTraits.Chinese;
+                    else character.heritageTrait = HeritageTraits.Party;
+                    break;
+                case "Svalarheima":
+                    if (roll < 3) character.heritageTrait = HeritageTraits.Laowai;
+                    else if (roll < 12) character.heritageTrait = HeritageTraits.Shualài;
+                    else if (roll < 18) character.heritageTrait = HeritageTraits.Guanxi;
+                    else if (roll < 20) character.heritageTrait = HeritageTraits.Chinese;
+                    else character.heritageTrait = HeritageTraits.Party;
+                    break;
+                case "Human Edge":
+                    if (roll < 6) character.heritageTrait = HeritageTraits.Laowai;
+                    else if (roll < 12) character.heritageTrait = HeritageTraits.Shualài;
+                    else if (roll < 18) character.heritageTrait = HeritageTraits.Guanxi;
+                    else if (roll < 20) character.heritageTrait = HeritageTraits.Chinese;
+                    else character.heritageTrait = HeritageTraits.Party;
+                    break;
+            }
+            console.log("YuJing heritage traits: "+character.heritageTrait);
         }
 
         if (character.homeland === null) {

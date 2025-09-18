@@ -40,6 +40,9 @@ export enum SocialClass {
     CriminalUnderclass,
     CriminalUpperClass,
     CriminalElite,
+
+    //YuJing
+    Dissident
 };
 
 class SocialClassModel {
@@ -177,6 +180,11 @@ export class SocialClasses {
             "",
             Attribute.Brawn,
             5),
+        [SocialClass.Dissident]: new SocialClassModel(
+            "Dissident",
+            "Enemy of the State Empire",
+            Attribute.Willpower,
+            0),
     };
 
     getSocialClasses() {
@@ -194,6 +202,51 @@ export class SocialClasses {
             soc.push(new SocialClassViewModel(SocialClass.Underclass_Helot, this._socialClasses[SocialClass.Underclass_Helot]));
             soc.push(new SocialClassViewModel(SocialClass.Demogrant_Helot, this._socialClasses[SocialClass.Demogrant_Helot]));
             soc.push(new SocialClassViewModel(SocialClass.Middle_Helot, this._socialClasses[SocialClass.Middle_Helot]));
+        }
+        else if (character.faction === Faction.YuJing && character.hasSource(Source.YuJing)) {
+            switch (character.heritageTrait) {
+                case HeritageTraits.Laowai:
+                    soc.push(new SocialClassViewModel(SocialClass.Dissident, this._socialClasses[SocialClass.Dissident]));
+                    soc.push(new SocialClassViewModel(SocialClass.Underclass, this._socialClasses[SocialClass.Underclass]));
+                    soc.push(new SocialClassViewModel(SocialClass.Demogrant, this._socialClasses[SocialClass.Demogrant]));
+                    soc.push(new SocialClassViewModel(SocialClass.Upper, this._socialClasses[SocialClass.Upper]));
+                    break;
+                case HeritageTraits.Shualài:
+                    soc.push(new SocialClassViewModel(SocialClass.Dissident, this._socialClasses[SocialClass.Dissident]));
+                    soc.push(new SocialClassViewModel(SocialClass.Underclass, this._socialClasses[SocialClass.Underclass]));
+                    soc.push(new SocialClassViewModel(SocialClass.Demogrant, this._socialClasses[SocialClass.Demogrant]));
+                    soc.push(new SocialClassViewModel(SocialClass.Middle, this._socialClasses[SocialClass.Middle]));
+                    soc.push(new SocialClassViewModel(SocialClass.Upper, this._socialClasses[SocialClass.Upper]));
+                    break;
+                case HeritageTraits.Guanxi:
+                    soc.push(new SocialClassViewModel(SocialClass.Dissident, this._socialClasses[SocialClass.Dissident]));
+                    soc.push(new SocialClassViewModel(SocialClass.Demogrant, this._socialClasses[SocialClass.Demogrant]));
+                    soc.push(new SocialClassViewModel(SocialClass.Middle, this._socialClasses[SocialClass.Middle]));
+                    soc.push(new SocialClassViewModel(SocialClass.Upper, this._socialClasses[SocialClass.Upper]));
+                    soc.push(new SocialClassViewModel(SocialClass.Elite, this._socialClasses[SocialClass.Elite]));
+                    break;
+                case HeritageTraits.Chinese:
+                    soc.push(new SocialClassViewModel(SocialClass.Dissident, this._socialClasses[SocialClass.Dissident]));
+                    soc.push(new SocialClassViewModel(SocialClass.Demogrant, this._socialClasses[SocialClass.Demogrant]));
+                    soc.push(new SocialClassViewModel(SocialClass.Middle, this._socialClasses[SocialClass.Middle]));
+                    soc.push(new SocialClassViewModel(SocialClass.Upper, this._socialClasses[SocialClass.Upper]));
+                    soc.push(new SocialClassViewModel(SocialClass.Elite, this._socialClasses[SocialClass.Elite]));
+                    soc.push(new SocialClassViewModel(SocialClass.Hyper_Elite, this._socialClasses[SocialClass.Hyper_Elite]));
+                    break;
+                case HeritageTraits.Party:
+                    soc.push(new SocialClassViewModel(SocialClass.Dissident, this._socialClasses[SocialClass.Dissident]));
+                    soc.push(new SocialClassViewModel(SocialClass.Middle, this._socialClasses[SocialClass.Middle]));
+                    soc.push(new SocialClassViewModel(SocialClass.Upper, this._socialClasses[SocialClass.Upper]));
+                    soc.push(new SocialClassViewModel(SocialClass.Elite, this._socialClasses[SocialClass.Elite]));
+                    soc.push(new SocialClassViewModel(SocialClass.Hyper_Elite, this._socialClasses[SocialClass.Hyper_Elite]));
+                    break;
+                case HeritageTraits.Imperial:
+                    soc.push(new SocialClassViewModel(SocialClass.Dissident, this._socialClasses[SocialClass.Dissident]));
+                    soc.push(new SocialClassViewModel(SocialClass.Upper, this._socialClasses[SocialClass.Upper]));
+                    soc.push(new SocialClassViewModel(SocialClass.Elite, this._socialClasses[SocialClass.Elite]));
+                    soc.push(new SocialClassViewModel(SocialClass.Hyper_Elite, this._socialClasses[SocialClass.Hyper_Elite]));
+                    break;
+            }
         }
         else if (character.faction === Faction.Nomads && character.hasSource(Source.Nomads)) {
             if (character.isUplift()) {

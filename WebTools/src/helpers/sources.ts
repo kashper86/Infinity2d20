@@ -4,6 +4,7 @@ export enum Source {
     Haqqislam,
     PanOceania,
     Nomads,
+    YuJing,
 }
 
 class SourceModel {
@@ -30,6 +31,7 @@ export class Sources {
         [Source.Haqqislam]: { name: "Haqqislam" },
         [Source.PanOceania]: { name: "PanOceania" },
         [Source.Nomads]: { name: "Nomads" },
+        [Source.YuJing]: { name: "Yu Jing" },
     };
 
     getSources() {
