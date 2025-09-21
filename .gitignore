@@ -9,3 +9,4 @@ WebTools/dist/
 /Webtools/.vs
 /packages
 /WebTools/obj
+*.zip

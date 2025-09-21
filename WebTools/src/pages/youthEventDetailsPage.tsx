@@ -32,6 +32,7 @@ export class YouthEventDetailsPage extends React.Component<IPageProperties, {}> 
     }
 
     private onNext() {
+        console.log("go to Education 2");
         Navigation.navigateToPage(PageIdentity.Education);
     }
 }

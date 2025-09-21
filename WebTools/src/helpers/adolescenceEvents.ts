@@ -69,8 +69,56 @@ export class AdolescenceEvents {
         else if (character.faction === Faction.Haqqislam && character.hasSource(Source.Haqqislam)) {
             switch (table) {
                 case 1:
-                    event = this.rollOnHaqqislamTable(ev); // says Heritage, but what is that?
-                    event.table = "Haqqislam";
+                    switch (character.heritage){
+                        case Faction.Aleph:
+                            event = this.rollOnAlephTable(ev);
+                            event.table = "Aleph";
+                            break;
+                        case Faction.Ariadna:
+                            event = this.rollOnAriadnaTable(ev);
+                            event.table = "Ariadna";
+                            break;
+                        case Faction.Corporation:
+                            event = this.rollOnCorporationTable(ev);
+                            event.table = "Corporation";
+                            break;
+                        case Faction.Haqqislam:
+                            event = this.rollOnHaqqislamTable(ev); // says Heritage, but what is that? => kashper: Changed to table from each heritage
+                            event.table = "Haqqislam";
+                            break;  
+                        case Faction.Mercenary:
+                            event = this.rollOnMercenaryTable(ev);
+                            event.table = "Mercenary";
+                            break;
+                        case Faction.MinorNation:
+                            event = this.rollOnMinorNationTable(ev);
+                            event.table = "MinorNation";
+                            break;
+                        case Faction.Nomads:
+                            event = this.rollOnNomadsTable(ev);
+                            event.table = "Nomad";
+                            break;
+                        case Faction.O12:
+                            event = this.rollOnO12Table(ev);
+                            event.table = "012";
+                            break;
+                        case Faction.PanOceania:
+                            event = this.rollOnPanOceaniaTable(ev);
+                            event.table = "PanOceania";
+                            break;
+                        case Faction.Submondo:
+                            event = this.rollOnSubmondoTable(ev);
+                            event.table = "Submondo";
+                            break;
+                        case Faction.YuJing:
+                            event = this.rollOnYuJingTable(ev);
+                            event.table = "YuJing";
+                            break;
+                        default:
+                            event = this.rollOnHaqqislamTable(ev);
+                            event.table = "Haqqislam";
+                            break;
+                    }
                     event.eventNumber = ev;
                     break;
                 case 2:
@@ -99,8 +147,57 @@ export class AdolescenceEvents {
         else if (character.faction === Faction.PanOceania && character.hasSource(Source.PanOceania)) {
             switch (table) {
                 case 1:
-                    event = this.rollOnPanOceaniaTable(ev); // says Heritage, but what is that?
-                    event.table = "PanOceania";
+                    
+                    switch (character.heritage){
+                        case Faction.Aleph:
+                            event = this.rollOnAlephTable(ev);
+                            event.table = "Aleph";
+                            break;
+                        case Faction.Ariadna:
+                            event = this.rollOnAriadnaTable(ev);
+                            event.table = "Ariadna";
+                            break;
+                        case Faction.Corporation:
+                            event = this.rollOnCorporationTable(ev);
+                            event.table = "Corporation";
+                            break;
+                        case Faction.Haqqislam:
+                            event = this.rollOnHaqqislamTable(ev);
+                            event.table = "Haqqislam";
+                            break;  
+                        case Faction.Mercenary:
+                            event = this.rollOnMercenaryTable(ev);
+                            event.table = "Mercenary";
+                            break;
+                        case Faction.MinorNation:
+                            event = this.rollOnMinorNationTable(ev);
+                            event.table = "MinorNation";
+                            break;
+                        case Faction.Nomads:
+                            event = this.rollOnNomadsTable(ev);
+                            event.table = "Nomad";
+                            break;
+                        case Faction.O12:
+                            event = this.rollOnO12Table(ev);
+                            event.table = "012";
+                            break;
+                        case Faction.PanOceania:
+                            event = this.rollOnPanOceaniaTable(ev); // says Heritage, but what is that? => kashper: Changed to table from each heritage
+                            event.table = "PanOceania";
+                            break;
+                        case Faction.Submondo:
+                            event = this.rollOnSubmondoTable(ev);
+                            event.table = "Submondo";
+                            break;
+                        case Faction.YuJing:
+                            event = this.rollOnYuJingTable(ev);
+                            event.table = "YuJing";
+                            break;
+                        default:
+                            event = this.rollOnPanOceaniaTable(ev);
+                            event.table = "PanOceania";
+                            break;
+                    }
                     event.eventNumber = ev;
                     break;
                 case 2:
@@ -146,6 +243,36 @@ export class AdolescenceEvents {
                     event.eventNumber = ev;
                     break;
                 case 6:
+                    event = this.rollOnTableC(ev);
+                    event.table = "C";
+                    event.eventNumber = ev;
+                    break;
+            }
+        }
+        else if (character.faction === Faction.YuJing && character.hasSource(Source.YuJing)) {
+            switch (table) {
+                case 1:
+                case 2:
+                case 3:
+                    console.log("Adolesce YJ YJ");
+                    event = this.rollOnYuJingTable(ev);
+                    event.table = "YuJing";
+                    event.eventNumber = ev;
+                    break;
+                case 4:
+                    console.log("Adolesce YJ A");
+                    event = this.rollOnTableA(ev);
+                    event.table = "A";
+                    event.eventNumber = ev;
+                    break;
+                case 5:
+                    console.log("Adolesce YJ B");
+                    event = this.rollOnTableB(ev);
+                    event.table = "B";
+                    event.eventNumber = ev;
+                    break;
+                case 6:
+                    console.log("Adolesce YJ C");
                     event = this.rollOnTableC(ev);
                     event.table = "C";
                     event.eventNumber = ev;
@@ -264,6 +391,7 @@ export class AdolescenceEvents {
     }
 
     private rollOnTableA(roll: number) {
+        console.log("tableA");
         switch (roll) {
             case 1:
                 return new AdolescenceEventModel(new EventModel(
@@ -467,6 +595,7 @@ export class AdolescenceEvents {
     }
 
     private rollOnTableB(roll: number): AdolescenceEventModel {
+        console.log("tableB");
         switch (roll) {
             case 1:
                 return new AdolescenceEventModel(new EventModel(
@@ -635,6 +764,7 @@ export class AdolescenceEvents {
     }
 
     private rollOnTableC(roll: number): AdolescenceEventModel {
+        console.log("tableC");
         switch (roll) {
             case 1:
                 return new AdolescenceEventModel(new EventModel(
@@ -809,7 +939,30 @@ export class AdolescenceEvents {
         return null;
     }
 
+    private rollOnTableABC(roll: number): AdolescenceEventModel {
+        console.log("tableABC");
+        var op = Math.floor(Math.random() * 3) + 1;
+        switch (op) {
+            case 1:
+                return this.rollOnTableA(roll);
+            case 2:
+                return this.rollOnTableB(roll);
+            case 3:
+                return this.rollOnTableC(roll);
+            default:
+                return this.rollOnTableC(roll);
+        }
+    }
+
+    private rollOnAlephTable(roll: number): AdolescenceEventModel {
+        console.log("table Aleph");
+        return this.rollOnTableABC(roll);
+    }
+
     private rollOnAriadnaTable(roll: number): AdolescenceEventModel {
+        console.log("table Ariadna");
+        if (!character.hasSource(Source.Ariadna))
+            return this.rollOnTableABC(roll);
         switch (roll) {
             case 1:
                 return new AdolescenceEventModel(new EventModel(
@@ -997,6 +1150,9 @@ export class AdolescenceEvents {
     }
 
     private rollOnAntipodeTable(roll: number): AdolescenceEventModel {
+        console.log("table Antipode");
+        if (!character.hasSource(Source.Ariadna))
+            return this.rollOnTableABC(roll);
         switch (roll) {
             case 1:
                 return new AdolescenceEventModel(new EventModel(
@@ -1126,7 +1282,13 @@ export class AdolescenceEvents {
         return null;
     }
 
+    private rollOnCorporationTable(roll: number): AdolescenceEventModel {
+        return this.rollOnTableABC(roll);
+    }
+
     private rollOnDogfaceAndWulverTable(roll: number): AdolescenceEventModel {
+        if (!character.hasSource(Source.Ariadna))
+            return this.rollOnTableABC(roll);
         switch (roll) {
             case 1:
                 return new AdolescenceEventModel(new EventModel(
@@ -1282,6 +1444,8 @@ export class AdolescenceEvents {
     }
 
     private rollOnHaqqislamTable(roll: number): AdolescenceEventModel {
+        if (!character.hasSource(Source.Haqqislam))
+            return this.rollOnTableABC(roll);
         switch (roll) {
             case 1:
                 return new AdolescenceEventModel(new EventModel(
@@ -1457,7 +1621,17 @@ export class AdolescenceEvents {
         return null;
     }
 
+    private rollOnMercenaryTable(roll: number): AdolescenceEventModel {
+        return this.rollOnTableABC(roll);
+    }
+
+    private rollOnMinorNationTable(roll: number): AdolescenceEventModel {
+        return this.rollOnTableABC(roll);
+    }
+
     private rollOnPanOceaniaTable(roll: number): AdolescenceEventModel {
+        if (!character.hasSource(Source.PanOceania))
+            return this.rollOnTableABC(roll);
         switch (roll) {
             case 1: {
                 let cost = DiceRoller.rollSpecial(8, 10);
@@ -1623,6 +1797,8 @@ export class AdolescenceEvents {
     }
 
     private rollOnNomadsTable(roll: number): AdolescenceEventModel {
+        if (!character.hasSource(Source.Nomads))
+            return this.rollOnTableABC(roll);
         switch (roll) {
             case 1: {
                 return new AdolescenceEventModel(new EventModel(
@@ -1831,6 +2007,33 @@ export class AdolescenceEvents {
                     "Resurrection"),
                     () => { });
             }
+        }
+    }
+
+    private rollOnO12Table(roll: number): AdolescenceEventModel {
+        return this.rollOnTableABC(roll);
+    }
+
+    private rollOnSubmondoTable(roll: number): AdolescenceEventModel {
+        return this.rollOnTableABC(roll);
+    }
+
+    private rollOnYuJingTable(roll: number): AdolescenceEventModel {
+        console.log("table YJ roll:"+roll);
+        if (!character.hasSource(Source.YuJing))
+            return this.rollOnTableABC(roll);
+        switch (roll) {
+            case 1:
+                {
+                    return new AdolescenceEventModel(new EventModel(
+                    "A charismatic, forward-thinking member of The Party’s New Wave becomes your mentor. Gain 1 rank in Persuasion. Gain a rival in Yu Jing Old Guard.",
+                    "Radical Futurist",
+                    "A charismatic, forward-thinking member of The Party’s New Wave becomes your mentor."),
+                    () => {
+                        character.attributes[Skill.Persuade].value++;
+                    });
+                }
+                break;
         }
     }
 }

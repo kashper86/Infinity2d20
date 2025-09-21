@@ -9,6 +9,9 @@ import {YouthEventsHelper, YouthEventModel} from '../helpers/youthEvents';
 import {FryEventsHelper} from '../helpers/fryEvents';
 import {AlienHost} from '../helpers/alienHosts';
 import { AwakeningEventsHelper } from '../helpers/awakeningEvents';
+import { Source } from '../helpers/sources';
+import { Faction } from '../helpers/factions';
+import { YuJingYouthEventsHelper } from '../helpers/yuJingYouthEvents';
 
 interface IYouthEventPageProps {
     showSelection: boolean;
@@ -104,6 +107,12 @@ export class YouthEventPage extends React.Component<IPageProperties, IYouthEvent
             let ev = AwakeningEventsHelper.generateEvent();
             character.youthEvent = new YouthEventModel(ev.description, ev.apply);
         }
+        /*else if (character.hasSource(Source.YuJing) && character.heritage === Faction.YuJing) {
+            console.log("YuJing event");
+            let ev = YouthEventsHelper.generateEvent()
+            character.youthEvent = new YouthEventModel(ev.description, ev.apply);
+            console.log("YuJing event after");
+        }*/
         else {
             let ev = YouthEventsHelper.generateEvent()
             character.youthEvent = ev;
@@ -135,9 +144,11 @@ export class YouthEventPage extends React.Component<IPageProperties, IYouthEvent
         character.youthEvent.apply();
 
         if (YouthEventsHelper.getDetailView(character.youthEvent)) {
+            console.log("go to detail");
             Navigation.navigateToPage(PageIdentity.YouthEventDetails);
         }
         else {
+            console.log("go to education");
             Navigation.navigateToPage(PageIdentity.Education);
         }
     }

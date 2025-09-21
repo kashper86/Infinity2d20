@@ -2,10 +2,10 @@
 import {character} from '../common/character';
 import {Navigation} from '../common/navigator';
 import {PageIdentity, IPageProperties} from './pageFactory';
-import {BirthPlacesHelper} from '../helpers/birthPlaces';
+import {BirthPlacesHelper, HeritageTraits} from '../helpers/birthPlaces';
 import {Skill, SkillsHelper} from '../helpers/skills';
 import {AttributesHelper} from '../helpers/attributes';
-import {FactionsHelper} from '../helpers/factions';
+import {Faction, FactionsHelper} from '../helpers/factions';
 import {TalentsHelper} from '../helpers/talents';
 import {PageHeader} from '../components/pageHeader';
 import {AttributeView} from '../components/attribute';
@@ -14,6 +14,7 @@ import {DropDownInput} from '../components/dropDownInput';
 import {Button} from '../components/button';
 import {Dialog} from '../components/dialog';
 import {AlienHost} from '../helpers/alienHosts';
+import { Source } from '../helpers/sources';
 
 export class BirthPlaceDetailsPage extends React.Component<IPageProperties, {}> {
     private _languages: string[];
@@ -53,10 +54,15 @@ export class BirthPlaceDetailsPage extends React.Component<IPageProperties, {}> 
             ? "SISSOLU WATERS"
             : "SOCIAL CLASS";
 
+        const yuJingHeritage = (character.hasSource(Source.YuJing) && character.heritage === Faction.YuJing)
+            ? <div className="panel"><div className="skill-name">You are born into {character.heritageTrait} heritage.</div></div>
+            : "";
+
         return (
             <div className="page">
                 <PageHeader text={FactionsHelper.getBirthPlaceType(character.heritage).toUpperCase() } />
                 <div className="header-text">{birthPlace.name}{homeland}</div>
+                {yuJingHeritage}
                 <div className="panel">
                     <div className="header-small">ATTRIBUTES</div>
                     {attributes}
