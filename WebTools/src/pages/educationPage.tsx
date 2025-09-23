@@ -9,6 +9,7 @@ import {Education, EducationsHelper} from '../helpers/educations';
 
 interface IEducationPageProps {
     showSelection: boolean;
+    showFreeEducations: boolean;
 }
 
 export class EducationPage extends React.Component<IPageProperties, IEducationPageProps> {
@@ -16,7 +17,8 @@ export class EducationPage extends React.Component<IPageProperties, IEducationPa
         super(props);
 
         this.state = {
-            showSelection: false
+            showSelection: false,
+            showFreeEducations: false,
         };
     }
 
@@ -27,6 +29,10 @@ export class EducationPage extends React.Component<IPageProperties, IEducationPa
 
         const select = (<Button text="SELECT EDUCATION" lpCost={1} className="button-dark" onClick={() => { this.showEducations() } }/>);
 
+        const free = character.freeEducations.length > 0
+                    ? <Button text={`FREE EDUCATION (${character.freeEducations.length})`} className="button-dark" onClick={() => { this.showFreeEducations() } }/>
+                    : undefined;
+
         const content = !this.state.showSelection ?
             (
                 <div>
@@ -34,6 +40,7 @@ export class EducationPage extends React.Component<IPageProperties, IEducationPa
                         What kind of education did you get?
                     </div>
                     <div className="button-container">
+                        {free}
                         {roll}
                         {select}
                     </div>
@@ -58,11 +65,24 @@ export class EducationPage extends React.Component<IPageProperties, IEducationPa
     }
 
     private showEducations() {
-        this.setState({ showSelection: true });
+        this.setState({
+            showSelection: true,
+            showFreeEducations: false,
+         });
+    }
+
+    private showFreeEducations() {
+        this.setState({
+            showSelection: false,
+            showFreeEducations: true
+        });
     }
 
     private hideEducations() {
-        this.setState({ showSelection: false });
+        this.setState({
+            showSelection: false,
+            showFreeEducations: false,
+         });
     }
 
     private selectEducation(edu: Education) {

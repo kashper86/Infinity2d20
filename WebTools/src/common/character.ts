@@ -100,6 +100,7 @@ export class Character {
     public homeEnvironment: HomeEnvironment;
     public education: Education;
     public careers: CharacterCareer[] = [];
+    public freeEducations: Education[] = [];
     public freeCareers: Career[] = [];
     public prohibitedCareers: Career[] = [];
     public firstCareer: Career;

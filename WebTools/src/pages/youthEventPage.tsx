@@ -107,12 +107,14 @@ export class YouthEventPage extends React.Component<IPageProperties, IYouthEvent
             let ev = AwakeningEventsHelper.generateEvent();
             character.youthEvent = new YouthEventModel(ev.description, ev.apply);
         }
-        /*else if (character.hasSource(Source.YuJing) && character.heritage === Faction.YuJing) {
+        else if (character.hasSource(Source.YuJing) && character.heritage === Faction.YuJing) {
             console.log("YuJing event");
-            let ev = YouthEventsHelper.generateEvent()
-            character.youthEvent = new YouthEventModel(ev.description, ev.apply);
+            let ev = YuJingYouthEventsHelper.generateEvent()
+            console.log(ev.description);
+            console.log(ev.apply);
+            character.youthEvent = ev;//new YouthEventModel(ev.description, ev.apply);
             console.log("YuJing event after");
-        }*/
+        }
         else {
             let ev = YouthEventsHelper.generateEvent()
             character.youthEvent = ev;

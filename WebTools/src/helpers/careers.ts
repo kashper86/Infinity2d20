@@ -137,6 +137,11 @@ export enum Career {
     UpliftedMuscle,
     Wrench,
 
+    // Aleph
+    Artisan,
+    ImperialAgent,
+    InternalAffairsAgent,
+
     Any
 }
 

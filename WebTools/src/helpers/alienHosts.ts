@@ -174,7 +174,7 @@ export class AlienHosts {
             2,
             Source.Nomads),
         [AlienHost.UpliftSuidae]: new AlienHostModel(
-            "Uploft (Suidae)",
+            "Uplift (Suidae)",
             "Nomads",
             [0, 0, 1, 0, 0, 0, 0],
             [],

@@ -4,7 +4,8 @@ import {CareerEventModel} from '../helpers/careerEvents';
 
 export enum AlephForm {
     Aspect,
-    Recreation
+    Recreation,
+    AI
 }
 
 class AlephFormModel {

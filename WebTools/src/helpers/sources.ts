@@ -5,6 +5,7 @@ export enum Source {
     PanOceania,
     Nomads,
     YuJing,
+    Aleph,
 }
 
 class SourceModel {

@@ -2019,20 +2019,207 @@ export class AdolescenceEvents {
     }
 
     private rollOnYuJingTable(roll: number): AdolescenceEventModel {
-        console.log("table YJ roll:"+roll);
         if (!character.hasSource(Source.YuJing))
             return this.rollOnTableABC(roll);
         switch (roll) {
             case 1:
-                {
-                    return new AdolescenceEventModel(new EventModel(
+                return new AdolescenceEventModel(new EventModel(
                     "A charismatic, forward-thinking member of The Party’s New Wave becomes your mentor. Gain 1 rank in Persuasion. Gain a rival in Yu Jing Old Guard.",
                     "Radical Futurist",
                     "A charismatic, forward-thinking member of The Party’s New Wave becomes your mentor."),
+                    () => { });
+                break;
+            case 2:
+                return new AdolescenceEventModel(new EventModel(
+                    "You are admitted to the Imperial College. Gain 1 rank in Education and add 1d6 years to your age. You may freely select Internal Affairs Agent as your first career.",
+                    "Workaholic",
+                    "You are admitted to the Imperial College."
+                    ),
                     () => {
-                        character.attributes[Skill.Persuade].value++;
+                        character.age += Math.floor(Math.random() * 6 + 1);
+                        character.freeCareers.push(Career.InternalAffairsAgent);
                     });
+                break;
+            case 3:
+                return new AdolescenceEventModel(new EventModel(
+                    "You have an intensely spiritual experience, leading you to dedicate yourself to a religion. What spoke to you so deeply? Gain 1 rank in Discipline.",
+                    "ReliguiousDedicant",
+                    "You have an intensely spiritual experience, leading you to dedicate yourself to a religion. What spoke to you so deeply?"
+                    ),
+                    () => { });
+                break;
+            case 4:
+                return new AdolescenceEventModel(new EventModel(
+                    "You show an uncanny talent for a traditional artistic discipline. Increase your Social Status by 1 step, but suffer +1 complication range on Lifestyle tests to blend in.",
+                    "Cultural Anachronism",
+                    "You show an uncanny talent for a traditional artistic discipline."
+                    ),
+                    () => { 
+                        SocialClassesHelper.increaseSocialClass();
+                    });
+                break;
+            case 5:
+                return new AdolescenceEventModel(new EventModel(
+                    "Rebuffed by your other choices, you are accepted into the University of Kuraimori in Tomari. Are you disappointed? Relieved? Gain 1 rank in Psychology and add 1d6 years to your age. You may freely select Academic or Artisan as your first career.",
+                    "Underachiever",
+                    "Rebuffed by your other choices, you are accepted into the University of Kuraimori in Tomari. Are you disappointed? Relieved?"
+                    ),
+                    () => { 
+                        character.age += Math.floor(Math.random() * 6 + 1);
+                        character.freeCareers.push(Career.Academic);
+                        character.freeCareers.push(Career.Artisan);
+                    });
+                break;
+            case 6:
+                return new AdolescenceEventModel(new EventModel(
+                    "Singled out by the Celestial Guard, you receive a savage, public beating. Did you deserve it?",
+                    "Troublemaker",
+                    "Singled out by the Celestial Guard, you receive a savage, public beating. Did you deserve it?"
+                    ),
+                    () => { });
+                break;
+            case 7:
+                return new AdolescenceEventModel(new EventModel(
+                    "You spend some time in an acrobatic troupe. Gain 1 rank in Acrobatics",
+                    "Thrill Seeker",
+                    "You spend some time in an acrobatic troupe."
+                    ),
+                    () => { });
+                break;
+            case 8:
+                return new AdolescenceEventModel(new EventModel(
+                    "Whether you realized it or not, you were involved with a serious criminal enterprise. Your case went before a fenghuang, who was reliably stern. Gain a Criminal Record. Spend 1d6 years in an off-world prison before starting your first career.",
+                    "Convict",
+                    "Whether you realized it or not, you were involved with a serious criminal enterprise. Your case went before a fenghuang, who was reliably stern."
+                    ),
+                    () => { 
+                        character.age += Math.floor(Math.random() * 6 + 1);
+                        character.hasCriminalRecord = true;
+                    });
+                break;
+            case 9:
+                return new AdolescenceEventModel(new EventModel(
+                    "You acquitted yourself well in a youth science competition. Gain 1 rank in Science.",
+                    "Absent-Minded",
+                    "You acquitted yourself well in a youth science competition."
+                    ),
+                    () => { });
+                break;
+            case 10:
+                return new AdolescenceEventModel(new EventModel(
+                    "A sagacious, honourable member of the Party’s Old Guard becomes your mentor. Gain 1 rank in Discipline. Gain a rival in the Yu Jing New Wave.",
+                    "Rigid Traditionalist",
+                    "A sagacious, honourable member of the Party’s Old Guard becomes your mentor."
+                    ),
+                    () => { });
+                break;
+            case 11:
+                return new AdolescenceEventModel(new EventModel(
+                    "You became involved in an underground fighting ring. Gain 1 rank in Close Combat.",
+                    "Street Fighter",
+                    "You became involved in an underground fighting ring."
+                    ),
+                    () => { });
+                break;
+            case 12:
+                return new AdolescenceEventModel(new EventModel(
+                    "Unable to cope with the immense pressure, you wash out of university. Increase the difficulty of hazarding your first career by one step.",
+                    "Washout",
+                    "Unable to cope with the immense pressure, you wash out of university.",
+                    ),
+                    () => { }); //TODO Increase hazard difficulty
+                break;
+            case 13:
+                return new AdolescenceEventModel(new EventModel(
+                    "You fell in with a bad crowd and got caught. The zhàměng let you off relatively easy, but the State Empire has its eye on you. Gain a debt worth 5 Assets.",
+                    "Hot-Tempered",
+                    "You fell in with a bad crowd and got caught. The zhàměng let you off relatively easy, but the State Empire has its eye on you."
+                    ),
+                    () => { });
+                break;
+            case 14:
+                return new AdolescenceEventModel(new EventModel(
+                    "You discover a genuine knack for raising animals. Gain 1 rank in Animal Handling",
+                    "Backwater Manners",
+                    "You discover a genuine knack for raising animals. Gain 1 rank in Animal Handling"
+                    ),
+                    () => { 
+
+                    });
+                break;
+            case 15:
+                return new AdolescenceEventModel(new EventModel(
+                    "You take first place in a student competition. Everything is great, until a peer confronts you with proof that you cheated. Reduce Social Status by one step. Alternatively, you can try to keep them quiet through bribes (or fines, for beating them senseless) gaining a 4 Asset debt.",
+                    "Irredeemable Reprobate",
+                    "You take first place in a student competition. Everything is great, until a peer confronts you with proof that you cheated."
+                    ),
+                    () => {
+                        SocialClassesHelper.reduceSocialClass();
+                     });
+                break;
+            case 16:
+                return new AdolescenceEventModel(new EventModel(
+                    "You immerse yourself in the Bōsōzoku street racing scene. Gain 1 rank in Pilot, but gain an addiction to Nitrocaine. You may freely select Bōsōzoku as your first career.",
+                    "Adrenaline Junkie",
+                    "You immerse yourself in the Bōsōzoku street racing scene."
+                    ),
+                    () => {
+                        character.freeCareers.push(Career.Bosozoku);
+                     });
+                break;
+            case 17:
+                return new AdolescenceEventModel(new EventModel(
+                    "Your first love was accepted into a prestigious university… in another faction. Do you keep in touch? Gain an Ally (or Rival) in another faction.",
+                    "Sentimentalist",
+                    "Your first love was accepted into a prestigious university… in another faction. Do you keep in touch?"
+                    ),
+                    () => { });
+                break;
+            case 18:
+                return new AdolescenceEventModel(new EventModel(
+                    "You gain admission into the prestigious Tiān Di Jing Law School. You survive to graduation, though between sleep deprivation and stim abuse, it doesn’t always feel that way. Increase Willpower by 1, but decrease Brawn by 1. Add 1d6 years to your age, and you may freely select Imperial Agent as your first career.",
+                    "Ruthless",
+                    "You gain admission into the prestigious Tiān Di Jing Law School. You survive to graduation, though between sleep deprivation and stim abuse, it doesn’t always feel that way."
+                    ),
+                    () => { 
+                        character.attributes[Attribute.Brawn].value--;
+                        character.attributes[Attribute.Brawn].value--;
+                        character.age += Math.floor(Math.random() * 6 + 1);
+                        character.freeCareers.push(Career.ImperialAgent)
+                    });
+                break;
+            case 19:
+                let faction = FactionsHelper.generateFaction(false, true);
+                while (faction === character.faction) {
+                    faction = FactionsHelper.generateFaction(false, true);
                 }
+
+                const factionName = FactionsHelper.getFaction(faction).name;
+
+                return new AdolescenceEventModel(new EventModel(
+                    `From birth, you were taught the value of honour, of family, and tradition. Forced to choose between the three, you kept your honour—forsaking the rest. You defect to the ${factionName} faction.`,
+                    "Youxia",
+                    "From birth, you were taught the value of honour, of family, and tradition. Forced to choose between the three, you kept your honour—forsaking the rest."
+                    ),
+                    () => {
+                        character.heritage = character.faction;
+                        character.hasDefected = true;
+                        character.faction = faction;
+
+                        if (character.faction === Faction.Nomads && character.hasSource(Source.Nomads)) {
+                            character.heritageTrait = HeritageTraits.Lub;
+                        }
+                    });
+                break;
+            case 20:
+                return new AdolescenceEventModel(new EventModel(
+                    "The good news is that you won a resurrection lottery. The bad news is that you needed to. Your character died and was resurrected.",
+                    "Debt of Gratitude",
+                    "The good news is that you won a resurrection lottery. The bad news is that you needed to.",
+                    "Resurrection"),
+                    () => {
+                        character.applyDeath();
+                    });
                 break;
         }
     }
