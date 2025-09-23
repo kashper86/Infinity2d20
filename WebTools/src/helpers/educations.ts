@@ -144,7 +144,12 @@ export class Educations {
         ),
     };
 
-    getEducations() {
+    getEducations(freeEducations: Education[]) {
+        if (freeEducations && freeEducations.length > 0 ) {
+            return [
+                new EducationViewModel(freeEducations[0], this._educations[freeEducations[0]])
+            ]
+        }
         if (character.host === AlienHost.Antipode && character.faction === Faction.Ariadna && character.hasSource(Source.Ariadna)) {
             return [
                 new EducationViewModel(Education.ScoutTraining, this._educations[Education.ScoutTraining]),

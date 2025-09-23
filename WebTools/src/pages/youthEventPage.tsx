@@ -12,6 +12,8 @@ import { AwakeningEventsHelper } from '../helpers/awakeningEvents';
 import { Source } from '../helpers/sources';
 import { Faction } from '../helpers/factions';
 import { YuJingYouthEventsHelper } from '../helpers/yuJingYouthEvents';
+import { HeritageTraits } from '../helpers/birthPlaces';
+import { Career, CareersHelper } from '../helpers/careers';
 
 interface IYouthEventPageProps {
     showSelection: boolean;
@@ -108,12 +110,12 @@ export class YouthEventPage extends React.Component<IPageProperties, IYouthEvent
             character.youthEvent = new YouthEventModel(ev.description, ev.apply);
         }
         else if (character.hasSource(Source.YuJing) && character.heritage === Faction.YuJing) {
-            console.log("YuJing event");
             let ev = YuJingYouthEventsHelper.generateEvent()
-            console.log(ev.description);
-            console.log(ev.apply);
             character.youthEvent = ev;//new YouthEventModel(ev.description, ev.apply);
-            console.log("YuJing event after");
+            if (character.heritageTrait == HeritageTraits.Imperial)
+                character.freeCareers.push(Career.ImperialAgent);
+            if (character.heritageTrait == HeritageTraits.Party)
+                character.freeCareers.push(Career.YănjīngAgent);
         }
         else {
             let ev = YouthEventsHelper.generateEvent()
@@ -146,11 +148,9 @@ export class YouthEventPage extends React.Component<IPageProperties, IYouthEvent
         character.youthEvent.apply();
 
         if (YouthEventsHelper.getDetailView(character.youthEvent)) {
-            console.log("go to detail");
             Navigation.navigateToPage(PageIdentity.YouthEventDetails);
         }
         else {
-            console.log("go to education");
             Navigation.navigateToPage(PageIdentity.Education);
         }
     }

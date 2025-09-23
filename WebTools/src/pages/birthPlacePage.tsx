@@ -95,7 +95,8 @@ export class BirthPlacePage extends React.Component<IPageProperties, IBirthPlace
         character.birthPlace = home.name;
         character.birthPlaceId = home.roll;
 
-        BirthPlacesHelper.applyBirthPlace(home);
+        const roll = Math.floor(Math.random() * 20) + 1;
+        BirthPlacesHelper.applyBirthPlace(home, roll);
 
         Navigation.navigateToPage(PageIdentity.BirthPlaceDetails);
     }

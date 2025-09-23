@@ -30,10 +30,10 @@ export class EducationPage extends React.Component<IPageProperties, IEducationPa
         const select = (<Button text="SELECT EDUCATION" lpCost={1} className="button-dark" onClick={() => { this.showEducations() } }/>);
 
         const free = character.freeEducations.length > 0
-                    ? <Button text={`FREE EDUCATION (${character.freeEducations.length})`} className="button-dark" onClick={() => { this.showFreeEducations() } }/>
+                    ? (<Button text={`FREE EDUCATION (${character.freeEducations.length})`} className="button-dark" onClick={() => { this.showFreeEducations() } }/>)
                     : undefined;
 
-        const content = !this.state.showSelection ?
+        const content = (!this.state.showSelection && !this.state.showFreeEducations)?
             (
                 <div>
                     <div className="page-text">
@@ -46,6 +46,13 @@ export class EducationPage extends React.Component<IPageProperties, IEducationPa
                     </div>
                 </div>
             )
+            :  this.state.showFreeEducations ?
+                (
+                    <EducationSelection
+                        freeEducations={character.freeEducations}
+                        onSelection={(env) => { this.selectEducation(env, ) } }
+                        onCancel={() => { this.hideEducations() } } />
+                )
             : (
                 <EducationSelection
                     onSelection={(env) => { this.selectEducation(env); character.lifePoints--; } }

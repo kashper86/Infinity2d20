@@ -254,30 +254,28 @@ export class AdolescenceEvents {
                 case 1:
                 case 2:
                 case 3:
-                    console.log("Adolesce YJ YJ");
                     event = this.rollOnYuJingTable(ev);
                     event.table = "YuJing";
                     event.eventNumber = ev;
                     break;
                 case 4:
-                    console.log("Adolesce YJ A");
                     event = this.rollOnTableA(ev);
                     event.table = "A";
                     event.eventNumber = ev;
                     break;
                 case 5:
-                    console.log("Adolesce YJ B");
                     event = this.rollOnTableB(ev);
                     event.table = "B";
                     event.eventNumber = ev;
                     break;
                 case 6:
-                    console.log("Adolesce YJ C");
                     event = this.rollOnTableC(ev);
                     event.table = "C";
                     event.eventNumber = ev;
                     break;
             }
+            if (character.heritageTrait == HeritageTraits.Imperial)
+                event.trait += ", Dragon-Blooded";
         }
         else {
             switch (table) {
@@ -391,7 +389,6 @@ export class AdolescenceEvents {
     }
 
     private rollOnTableA(roll: number) {
-        console.log("tableA");
         switch (roll) {
             case 1:
                 return new AdolescenceEventModel(new EventModel(
@@ -595,7 +592,6 @@ export class AdolescenceEvents {
     }
 
     private rollOnTableB(roll: number): AdolescenceEventModel {
-        console.log("tableB");
         switch (roll) {
             case 1:
                 return new AdolescenceEventModel(new EventModel(
@@ -764,7 +760,6 @@ export class AdolescenceEvents {
     }
 
     private rollOnTableC(roll: number): AdolescenceEventModel {
-        console.log("tableC");
         switch (roll) {
             case 1:
                 return new AdolescenceEventModel(new EventModel(
@@ -940,7 +935,6 @@ export class AdolescenceEvents {
     }
 
     private rollOnTableABC(roll: number): AdolescenceEventModel {
-        console.log("tableABC");
         var op = Math.floor(Math.random() * 3) + 1;
         switch (op) {
             case 1:
@@ -955,12 +949,10 @@ export class AdolescenceEvents {
     }
 
     private rollOnAlephTable(roll: number): AdolescenceEventModel {
-        console.log("table Aleph");
         return this.rollOnTableABC(roll);
     }
 
     private rollOnAriadnaTable(roll: number): AdolescenceEventModel {
-        console.log("table Ariadna");
         if (!character.hasSource(Source.Ariadna))
             return this.rollOnTableABC(roll);
         switch (roll) {
@@ -1150,7 +1142,6 @@ export class AdolescenceEvents {
     }
 
     private rollOnAntipodeTable(roll: number): AdolescenceEventModel {
-        console.log("table Antipode");
         if (!character.hasSource(Source.Ariadna))
             return this.rollOnTableABC(roll);
         switch (roll) {

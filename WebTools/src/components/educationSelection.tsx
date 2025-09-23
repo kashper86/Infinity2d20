@@ -5,6 +5,7 @@ import {AttributesHelper} from '../helpers/attributes';
 import {Button} from './button';
 
 interface IEducationSelectionProperties {
+    freeEducations?: Education[];
     onSelection: (edu: Education) => void;
     onCancel: () => void;
 }
@@ -15,7 +16,7 @@ export class EducationSelection extends React.Component<IEducationSelectionPrope
     }
 
     render() {
-        var edus = EducationsHelper.getEducations().map((edu, i) => {
+        var edus = EducationsHelper.getEducations(this.props.freeEducations).map((edu, i) => {
             const attributes =
                 (
                     <div key={i}>

@@ -319,6 +319,39 @@ export class BirthPlaces {
                         if (home.rollSecondaryLanguage) {
                             character.addLanguage(this.generateSecondaryLanguage(faction));
                         }
+                        if (character.hasSource(Source.YuJing) && character.faction == Faction.YuJing) {
+                            var rollY = Math.floor(Math.random() * 20) + 1;
+                            console.log("it is YuJing - let's add languages bases on heritage - " + character.heritageTrait);
+                            switch(character.heritageTrait) {
+                                case HeritageTraits.Laowai: 
+                                    character.addLanguage(this.generateRandomLanguage(faction));
+                                    break;
+                                case HeritageTraits.Shualài:
+                                    if (!birthPlace.languageOptions)
+                                        birthPlace.languageOptions = [];
+                                    birthPlace.languageOptions.push("Japanese");
+                                    birthPlace.languageOptions.push("Uyghur");
+                                    break;
+                                case HeritageTraits.Guanxi:
+                                    if (!birthPlace.languageOptions)
+                                        birthPlace.languageOptions = [];
+                                    birthPlace.languageOptions.push("Korean");
+                                    birthPlace.languageOptions.push("Laotian");
+                                    birthPlace.languageOptions.push("Mongolian");
+                                    birthPlace.languageOptions.push("Vietnamese");
+                                    birthPlace.languageOptions.push("Thai");
+                                    break;
+                                case HeritageTraits.Chinese:
+                                case HeritageTraits.Party:
+                                case HeritageTraits.Imperial:
+                                    character.addLanguage("Cantonese");
+                                    break;
+                                default: 
+                                    console.log("brak heritage przy pobieraniu birth place");
+                                    character.addLanguage("According to YJ Heritage - " + character.heritageTrait);
+
+                            }
+                        }
 
                         character.homeland = home.name;
                         break;
@@ -409,7 +442,54 @@ export class BirthPlaces {
         return null;
     }
 
-    applyBirthPlace(birthPlace: BirthPlaceModel) {
+    getYuJingHeritage(birthPlace: BirthPlaceModel, roll: number) {
+        switch (birthPlace.name){
+            case "Shentang":
+                if (roll < 3) return HeritageTraits.Laowai;
+                else if (roll < 6) return HeritageTraits.Shualài;
+                else if (roll < 18) return HeritageTraits.Guanxi;
+                else if (roll < 20) return HeritageTraits.Chinese;
+                else return HeritageTraits.Party;
+                break;
+            case "Yutang":
+                if (roll < 3) return HeritageTraits.Shualài;
+                else if (roll < 6) return HeritageTraits.Guanxi;
+                else if (roll < 18) return HeritageTraits.Chinese;
+                else if (roll < 20) return HeritageTraits.Party;
+                else return HeritageTraits.Imperial;
+                break;
+            case "Sol (Chung Kuo)":
+                if (roll < 3) return HeritageTraits.Laowai;
+                else if (roll < 6) return HeritageTraits.Shualài;
+                else if (roll < 12) return HeritageTraits.Guanxi;
+                else if (roll < 20) return HeritageTraits.Chinese;
+                else return HeritageTraits.Party;
+                break;
+            case "Paradiso":
+                if (roll < 3) return HeritageTraits.Laowai;
+                else if (roll < 6) return HeritageTraits.Shualài;
+                else if (roll < 12) return HeritageTraits.Guanxi;
+                else if (roll < 20) return HeritageTraits.Chinese;
+                else return HeritageTraits.Party;
+                break;
+            case "Svalarheima":
+                if (roll < 3) return HeritageTraits.Laowai;
+                else if (roll < 12) return HeritageTraits.Shualài;
+                else if (roll < 18) return HeritageTraits.Guanxi;
+                else if (roll < 20) return HeritageTraits.Chinese;
+                else return HeritageTraits.Party;
+                break;
+            case "Human Edge":
+                if (roll < 6) return HeritageTraits.Laowai;
+                else if (roll < 12) return HeritageTraits.Shualài;
+                else if (roll < 18) return HeritageTraits.Guanxi;
+                else if (roll < 20) return HeritageTraits.Chinese;
+                else return HeritageTraits.Party;
+                break;
+        }
+    }
+
+    applyBirthPlace(birthPlace: BirthPlaceModel, roll: number) {
         birthPlace.attributes.forEach(attr => {
             character.attributes[attr].value++;
         });
@@ -434,7 +514,7 @@ export class BirthPlaces {
 
         //YuJing
         if (character.hasSource(Source.YuJing) && character.faction === Faction.YuJing) {
-            const roll = Math.floor(Math.random() * 20) + 1;
+            //const roll = Math.floor(Math.random() * 20) + 1;
             switch (birthPlace.name){
                 case "Shentang":
                     if (roll < 3) character.heritageTrait = HeritageTraits.Laowai;
@@ -479,7 +559,6 @@ export class BirthPlaces {
                     else character.heritageTrait = HeritageTraits.Party;
                     break;
             }
-            console.log("YuJing heritage traits: "+character.heritageTrait);
         }
 
         if (character.homeland === null) {
