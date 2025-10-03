@@ -103,8 +103,12 @@ export class Character {
     public freeEducations: Education[] = [];
     public freeCareers: Career[] = [];
     public prohibitedCareers: Career[] = [];
+    public hardCareers: Career[] = [];
+    public easyCareers: Career[] = [];
     public firstCareer: Career;
     public careerRerolls: number;
+    public hazardRerolls: number;
+    public proffesionalContacts: number;
     public youthEvent: YouthEventModel;
     public adolescenceEvent: AdolescenceEventModel;
     public careerEvents: CareerEventModel[] = [];
@@ -462,6 +466,8 @@ export class Character {
         });
         character.firstCareer = this.firstCareer;
         character.careerRerolls = this.careerRerolls;
+        character.hazardRerolls = this.hazardRerolls;
+        character.proffesionalContacts = this.proffesionalContacts;
         character.youthEvent = this.youthEvent ? new YouthEventModel(this.youthEvent.description) : null;
         character.adolescenceEvent = this.adolescenceEvent ? new AdolescenceEventModel(new EventModel(this.adolescenceEvent.event, this.adolescenceEvent.trait, this.adolescenceEvent.effect, this.adolescenceEvent.detailView)) : null;
         this.careerEvents.forEach(e => {

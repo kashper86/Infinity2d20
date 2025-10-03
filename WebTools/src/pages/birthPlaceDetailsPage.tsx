@@ -28,30 +28,7 @@ export class BirthPlaceDetailsPage extends React.Component<IPageProperties, {}> 
         var birthPlace = BirthPlacesHelper.getBirthPlace(character.heritage, character.birthPlaceId);
 
         this._languages = birthPlace.languageOptions;
-        /*if (character.hasSource(Source.YuJing) && character.faction == Faction.YuJing) {
-            if (character.heritageTrait == "") {
-                this.roll = Math.floor(Math.random() * 20) + 1;
-                if(BirthPlacesHelper.getYuJingHeritage(birthPlace, this.roll) == HeritageTraits.Shualài) {
-                    if (!birthPlace.languageOptions)
-                        birthPlace.languageOptions = [];
-                    birthPlace.languageOptions.push("Japanese");
-                    birthPlace.languageOptions.push("Uyghur");
-                    if (!this._languages)
-                        this._languages = [];
-                    this._languages.push("Japanese");
-                    this._languages.push("Uyghur");
-                }
-            } else {
-                if (character.heritageTrait == HeritageTraits.Shualài) {
-                    if (!this._languages)
-                        this._languages = [];
-                    this._languages.push("Japanese");
-                    this._languages.push("Uyghur");
-                }
-            }
-        }*/
-        console.log("Birthplace optional Lang: ");
-        console.log(birthPlace.languageOptions);
+
         this._language = this._languages ? this._languages[0] : null;
 
         this._skillsDone = false;

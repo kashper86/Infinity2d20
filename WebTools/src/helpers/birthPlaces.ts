@@ -319,7 +319,7 @@ export class BirthPlaces {
                         if (home.rollSecondaryLanguage) {
                             character.addLanguage(this.generateSecondaryLanguage(faction));
                         }
-                        if (character.hasSource(Source.YuJing) && character.faction == Faction.YuJing) {
+                        /*if (character.hasSource(Source.YuJing) && character.faction == Faction.YuJing) {
                             var rollY = Math.floor(Math.random() * 20) + 1;
                             console.log("it is YuJing - let's add languages bases on heritage - " + character.heritageTrait);
                             switch(character.heritageTrait) {
@@ -351,7 +351,7 @@ export class BirthPlaces {
                                     character.addLanguage("According to YJ Heritage - " + character.heritageTrait);
 
                             }
-                        }
+                        }*/
 
                         character.homeland = home.name;
                         break;
@@ -404,6 +404,41 @@ export class BirthPlaces {
             result.languageOptions = result.languageOptions.filter(function (lang, index, self) {
                 return index === self.indexOf(lang) && !character.hasLanguage(lang);
             });
+        }
+
+        if (character.hasSource(Source.YuJing) && character.faction == Faction.YuJing) {
+            var rollY = Math.floor(Math.random() * 20) + 1;
+            console.log("it is YuJing - let's add languages bases on heritage - " + character.heritageTrait);
+            switch(character.heritageTrait) {
+                case HeritageTraits.Laowai: 
+                    character.addLanguage(this.generateRandomLanguage(faction));
+                    break;
+                case HeritageTraits.Shualài:
+                    if (!result.languageOptions)
+                        result.languageOptions = [];
+                    result.languageOptions.push("Japanese");
+                    result.languageOptions.push("Uyghur");
+                    break;
+                case HeritageTraits.Guanxi:
+                case HeritageTraits.Imperial:
+                    if (!result.languageOptions)
+                        result.languageOptions = [];
+                    result.languageOptions.push("Korean");
+                    result.languageOptions.push("Laotian");
+                    result.languageOptions.push("Mongolian");
+                    result.languageOptions.push("Vietnamese");
+                    result.languageOptions.push("Thai");
+                    break;
+                case HeritageTraits.Chinese:
+                case HeritageTraits.Party:
+                    character.addLanguage("Cantonese");
+                    break;
+                /*default: 
+                    console.log("brak heritage przy pobieraniu birth place");
+                    //character.addLanguage("According to YJ Heritage - " + character.heritageTrait);
+                    break;*/
+
+            }
         }
 
         return result;

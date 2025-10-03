@@ -5,6 +5,7 @@ import {BirthPlacesHelper, HeritageTraits} from './birthPlaces';
 import {character} from '../common/character';
 import { Education } from './educations';
 import { CompositeYouthEventModel, YouthEventModel } from './youthEvents';
+import { Career } from './careers';
 
 class YuJingYouthEvents {
     generateEvent(): YouthEventModel {
@@ -16,7 +17,45 @@ class YuJingYouthEvents {
 
     getEvent(type: number, roll: number): YouthEventModel {
         //console.log("YuJingYouthEvent for "+character.heritageTrait+"("+type+","+roll+")");
-        switch(character.heritageTrait){
+        switch(character.heritageTrait) {
+            case HeritageTraits.Laowai:
+                character.easyCareers.push(Career.Artisan);
+                character.easyCareers.push(Career.Jopok);
+                character.easyCareers.push(Career.Neobushi,);
+                character.easyCareers.push(Career.Ninja);
+                character.easyCareers.push(Career.Subversive);
+                character.hardCareers.push(Career.CelestialGuard);
+                character.hardCareers.push(Career.ImperialAgent);
+                character.hardCareers.push(Career.InternalAffairsAgent);
+                character.hardCareers.push(Career.YănjīngAgent);
+                break;
+
+            case HeritageTraits.Shualài:
+                character.easyCareers.push(Career.Artisan);
+                character.easyCareers.push(Career.Criminal);
+                character.easyCareers.push(Career.Jopok,);
+                character.easyCareers.push(Career.Subversive);
+                character.hardCareers.push(Career.CelestialGuard);
+                character.hardCareers.push(Career.ImperialAgent);
+                character.hardCareers.push(Career.InternalAffairsAgent);
+                character.hardCareers.push(Career.Police);
+                character.hardCareers.push(Career.YănjīngAgent);
+                break;
+
+            case HeritageTraits.Guanxi:
+            case HeritageTraits.Imperial:
+                character.easyCareers.push(Career.CelestialGuard);
+                character.easyCareers.push(Career.Corporate);
+                character.easyCareers.push(Career.ImperialAgent,);
+                character.easyCareers.push(Career.InternalAffairsAgent);
+                character.easyCareers.push(Career.Subversive);
+                character.easyCareers.push(Career.Subversive);
+                character.hardCareers.push(Career.Neobushi);
+                character.hardCareers.push(Career.Ninja);
+                character.hardCareers.push(Career.Subversive);
+                break;
+        }
+        switch(character.heritageTrait) {
             case HeritageTraits.Laowai:
                 switch(type) {
                     case 1:
@@ -87,7 +126,7 @@ class YuJingYouthEvents {
                             case 2: return new YouthEventModel("Changed social class: During your youth, your family experienced a shift in their economic status (" + SocialClassesHelper.getSocialClass(this.getNewSocialClass()).name + ")", () => { this.changeSocialClass() });
                             case 3: return new YouthEventModel("Gained a two asset debt: You owe someone a debt worth two Assets", () => { });
                             case 4: return new YouthEventModel("Cube destruction: The Cube used to store your personality has been destroyed. You'll begin play without a Cube.", () => { });
-                            case 5: return new YouthEventModel("Gained Professional Contact 1", () => { }); //TODO Professional Contact X!!!
+                            case 5: return new YouthEventModel("Gained Professional Contact 1", () => { character.proffesionalContacts++; });
                             case 6: return new YouthEventModel("Gain one asset:  You've gained one additional Asset", () => { character.assets++; });
                         }
                     }
@@ -192,7 +231,7 @@ class YuJingYouthEvents {
                             switch (roll) {
                                 case 1: return new YouthEventModel("Gained a two asset debt: You owe someone a debt worth two Assets", () => { });
                                 case 2: return this.blackmailMaterial();
-                                case 3: return new YouthEventModel("You’re accepted into the rigorous meiyo sheiken honour tests. You can freely select Military Training in Decision Six.", () => { character.freeEducations.push(Education.Military_Training);}); //TODO Free Military Training
+                                case 3: return new YouthEventModel("You’re accepted into the rigorous meiyo sheiken honour tests. You can freely select Military Training in Decision Six.", () => { character.freeEducations.push(Education.Military_Training);});
                                 case 4: return this.vigorPoison(0, 3);
                                 case 5: return new YouthEventModel("Gained a three asset debt: You owe someone a debt worth three Assets", () => { });
                                 case 6: return new YouthEventModel("Died! Your character died and was resurrected.", () => { character.applyDeath() });
@@ -375,7 +414,7 @@ class YuJingYouthEvents {
                                 case 3: return this.vigorPoison(0, 3);
                                 case 4: return new YouthEventModel("Gain three assets:  You've gained three additional Assets", () => { character.assets+=3; });
                                 case 5: return new YouthEventModel("Learned a new language (" + this.getNewLanguage() + ")", () => { this.learnLanguage() });
-                                case 6: return new YouthEventModel("Gained Professional Contacts 1", () => { }); //TODO Professional Contacts X!!!
+                                case 6: return new YouthEventModel("Gained Professional Contacts 1", () => { character.proffesionalContacts++; });
                             }
                         }
                         break;
@@ -386,7 +425,7 @@ class YuJingYouthEvents {
                                 case 2: return new YouthEventModel("Changed social class: During your youth, your family experienced a shift in their economic status (" + SocialClassesHelper.getSocialClass(this.getNewSocialClass()).name + ")", () => { this.changeSocialClass() });
                                 case 3: return new YouthEventModel("Gain two assets:  You've gained two additional Assets", () => { character.assets+=2; });
                                 case 4: return new YouthEventModel("Cube destruction: The Cube used to store your personality has been destroyed. You'll begin play without a Cube.", () => { });
-                                case 5: return new YouthEventModel("Gained Professional Contacts 2", () => { }); //TODO Professional Contacts X!!!
+                                case 5: return new YouthEventModel("Gained Professional Contacts 2", () => { character.proffesionalContacts += 2; });
                                 case 6: return new YouthEventModel("Died! Your character died and was resurrected.", () => { character.applyDeath() });
                             }
                         }

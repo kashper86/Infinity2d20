@@ -139,9 +139,16 @@ export enum Career {
 
     // YuJing
     Artisan,
+    CombatPilot,
     ImperialAgent,
     InternalAffairsAgent,
+    Jopok,
+    Neobushi,
+    Ninja,
+    Subversive,
+    WuMing,
     YănjīngAgent,
+    ZhanshiGōngchéng,
 
     Any
 }
@@ -1639,6 +1646,30 @@ export class Careers {
             Source.Core,
             () => { return true; }
         ),*/
+        [Career.Artisan]: new CareerModel(
+            "Artisan",
+            "In the Human Sphere, manufacturing has been refined to allow the mass-fabrication of goods in enormous factories. Yu Jing have also ensured the personal touch is alive and well. While the work isn’t always done by hand per se, Artisans meticulously craft their chosen works with an astonishing attention to detail. Whether handwoven silk scarf, pistol holster to match a formal outfit, or even custom hardware interface, an Artisan’s touch can make all the difference. Though some fulfil corporate or custom orders, the most revered Artisans work independently, taking only those tasks worthy of their dedication. Of note are the swordsmiths who keep the spirit of Masamune alive. Whether nano-fine scrollwork on a Teseum-edged katana, or a list of ancestors along a monofilament dao, their blades are the envy of close combat aficionados everywhere.",
+            [1, 1, 1, 2, 2, 2, 1],
+            [Skill.Education, Skill.Lifestyle, Skill.Tech],
+            [Skill.Analysis, Skill.Discipline, Skill.Hacking],
+            ["Engineering Waldo|Hacking Device", "Powered Multitool", "Fashionable Clothing", "Memories Kit"],
+            "1+D4",
+            [Faction.YuJing],
+            Source.YuJing,
+            () => { return true; }
+        ),
+        [Career.CombatPilot]: new CareerModel(
+            "Combat Pilot",
+            "Whether piloting directly or through remote presence gear, Yu Jing offers no shortage of opportunities to sit at the helm of a state-of-the-art machine, putting pilot expertise to the service of the StateEmpire. A notable example is the Japanese Forward Regiment’s Aragoto Seikenbutai. As the high-octane tip of the spear for Yu Jing’s immediate interventions, the Aragoto—named for a Kabuki term meaning “rude performance”—blaze to the front lines on all-terrain bikes powered by aircraft engines. Plenty of Bōsōzoku racers find themselves drawn to this unit. For those less caught up in the allure of speed and danger, Yu Jing provides plenty of opportunities to pilot TAGs, as well as a healthy share of remote presence operator work. The StateEmpire’s military extensively uses these daring pilots in its perpetual quest for dominance.",
+            [1, 1, 1, 3, 1, 0, 2],
+            [Skill.Observation, Skill.Pilot, Skill.Tech],
+            [Skill.Ballistics, Skill.Pilot, Skill.Spacecraft],
+            ["Motorcycle|Remote Presence Gear", "Inlaid Palm Circuitry", "TF Coat|Armoured Clothing (Uniform)"],
+            "2+D1",
+            [Faction.Ariadna, Faction.Corporation, Faction.Haqqislam, Faction.Mercenary, Faction.MinorNation, Faction.Nomads, Faction.O12, Faction.PanOceania, Faction.Submondo, Faction.YuJing],
+            Source.YuJing,
+            () => { return true; }
+        ),
     };
 
     generateBasicCareer() {
@@ -1913,13 +1944,40 @@ export class Careers {
             }
         }
         else if (faction === Faction.YuJing) {
-            switch (roll) {
-                case 1: return Career.SpecialForces;
-                case 2: return Career.IntelligenceOperative;
-                case 3: return character.hasCriminalRecord ? this.generateFactionCareer(character.faction) : Career.CelestialGuard;
-                case 4: return Career.Bosozoku;
-                case 5: return Career.TagPilot;
-                case 6: return Career.Any;
+            if (character.hasSource(Source.YuJing)) {
+                roll = Math.floor(Math.random() * 20) + 1;
+
+                switch (roll) {
+                    case 1: return Career.SpecialForces;
+                    case 2: return Career.IntelligenceOperative;
+                    case 3: return Career.CelestialGuard;
+                    case 4: return Career.Bosozoku;
+                    case 5: return Career.TagPilot;
+                    case 6: return Career.InternalAffairsAgent;
+                    case 7: return Career.Jopok;
+                    case 8: return Career.Ninja;
+                    case 9: return Career.ZhanshiGōngchéng;
+                    case 10: return Career.Subversive;
+                    case 11: return Career.WuMing;
+                    case 12: return Career.Artisan;
+                    case 13: return Career.CombatPilot;
+                    case 14:
+                    case 15: return Career.YănjīngAgent;
+                    case 16:
+                    case 17: return Career.ImperialAgent;
+                    case 18:
+                    case 19:
+                    case 20: return Career.Any;
+                }
+            } else {
+                switch (roll) {
+                    case 1: return Career.SpecialForces;
+                    case 2: return Career.IntelligenceOperative;
+                    case 3: return character.hasCriminalRecord ? this.generateFactionCareer(character.faction) : Career.CelestialGuard;
+                    case 4: return Career.Bosozoku;
+                    case 5: return Career.TagPilot;
+                    case 6: return Career.Any;
+                }
             }
         }
         else if (faction === Faction.Corporation) {

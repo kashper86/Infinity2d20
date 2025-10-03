@@ -1,15 +1,15 @@
 ﻿import {character} from '../common/character';
 import {EventModel} from '../common/eventModel';
 import {Faction, FactionsHelper} from './factions';
-import {YouthEventsHelper} from './youthEvents';
 import {Career} from'./careers';
-import {SocialClassesHelper} from './socialClasses';
 import {Attribute} from './attributes';
-import {Skill} from './skills';
-import {BirthPlacesHelper} from './birthPlaces';
+import {BirthPlacesHelper, HeritageTraits} from './birthPlaces';
 import {AlienHost} from './alienHosts';
 import {DiceRoller} from './diceRoller';
 import {Source} from './sources';
+import { AdolescenceEventsHelper } from './adolescenceEvents';
+import { SocialClass, SocialClassesHelper } from './socialClasses';
+import { FiredEvent } from '../events/firedEvent';
 
 export class CareerEventModel extends EventModel {
     onApply: () => void;
@@ -133,6 +133,41 @@ export class CareerEvents {
                         event.table = "Nomads";
                         event.eventNumber = ev;
                     }
+                    break;
+                case 4:
+                    event = this.rollOnTableA(ev, character.isUnemployed());
+                    event.table = "A";
+                    event.eventNumber = ev;
+                    break;
+                case 5:
+                    event = this.rollOnTableB(ev, character.isUnemployed());
+                    event.table = "B";
+                    event.eventNumber = ev;
+                    break;
+                case 6:
+                    event = this.rollOnTableC(ev, character.isUnemployed());
+                    event.table = "C";
+                    event.eventNumber = ev;
+                    break;
+            }
+        }
+        else if (character.faction === Faction.YuJing && character.hasSource(Source.YuJing)) {
+            switch (table) {
+                case 1:
+                case 2:
+                    if (character.heritageTrait == HeritageTraits.Shualài && character.languages.indexOf("Japanese") > 0) {
+                        event = this.rollOnJapanTable(ev, character.isUnemployed());
+                        event.table = "Japan"
+                    } else {
+                        event = this.rollOnYuJingTable(ev, character.isUnemployed());
+                        event.table = "YuJing";
+                    }
+                    event.eventNumber = ev;
+                    break;
+                case 3:
+                    event = this.rollOnJapanTable(ev, character.isUnemployed());
+                    event.table = "Japan";
+                    event.eventNumber = ev;
                     break;
                 case 4:
                     event = this.rollOnTableA(ev, character.isUnemployed());
@@ -1345,6 +1380,358 @@ export class CareerEvents {
         }
     }
 
+    private rollOnYuJingTable(roll: number, isUnemployed: boolean): CareerEventModel {
+        let ev = AdolescenceEventsHelper.generateEvent()
+        return new CareerEventModel(new EventModel(ev.event, "", ev.effect, ev.detailView), ev.onApply);
+        /*switch (roll) {
+            case 1:
+                return new CareerEventModel(new EventModel(
+                    "An old mentor puts in a good word for you. Were there strings attached? You may hazard your next career, even if you don't meet the faction or other prerequisites.",
+                    "",
+                    "An old mentor puts in a good word for you. Were there strings attached?"
+                ),
+                    () => { character.ignoreHazardRequirements = true; });
+            case 2:
+                return new CareerEventModel(new EventModel(
+                    "Muhafiz Agents followed you home one night. What did they think you know? Do you?",
+                    "On the Watchlist",
+                    "Muhafiz Agents followed you home one night. What did they think you know? Do you?"
+                ));
+            case 3:
+                return new CareerEventModel(new EventModel(
+                    "You’re forced to choose between your ideals and keeping your job. Either become Fired or reduce your Status by 1.",
+                    "Idealistic Choice",
+                    "You’re forced to choose between your ideals and keeping your job.",
+                    "PayStatusToContinue"
+                ));
+            case 4:
+                return new CareerEventModel(new EventModel(
+                    "You stepped in to mediate a conflict before it turned violent. Gain 1 rank in Psychology.",
+                    "",
+                    "You stepped in to mediate a conflict before it turned violent.",
+                    "IncreasePsychology"
+                ));
+            case 5:
+                return new CareerEventModel(new EventModel(
+                    "During a midnight visit to Medina’s coffeehouses, you played a competitive game of dominoes with a kindly older man. As he leaves, the barista looks like they’ve seen a ghost. If you attempt to hazard the Hassassin Fiday or Exemplar careers, reduce the difficulty by 1. If you choose to stay in your current career, increase your Status by 1.",
+                    "",
+                    "During a midnight visit to Medina’s coffeehouses, you played a competitive game of dominoes with a kindly older man. As he leaves, the barista looks like they’ve seen a ghost."
+                ),
+                    () => {
+                        character.hassassinEvent = true;
+                    });
+            case 6:
+                return new CareerEventModel(new EventModel(
+                    "You spend so much time on caravanserai it starts to feel like home. You may choose the Trader or Caravaner career as your next career without making a hazard test.",
+                    "",
+                    "You spend so much time on caravanserai it starts to feel like home."
+                ),
+                    () => {
+                        character.freeCareers.push(Career.Trader);
+                        character.freeCareers.push(Career.Caravaner);
+                    });
+            case 7:
+                return new CareerEventModel(new EventModel(
+                    "You develop a rivalry with another Haqqislamite. Is it friendly? Deadly serious? What does your rival want?",
+                    "Rivalry",
+                    "You develop a rivalry with another Haqqislamite. Is it friendly? Deadly serious? What does your rival want?"
+                ));
+            case 8: {
+                const faction = FactionsHelper.generateFaction(false, true);
+                const factionName = FactionsHelper.getFaction(faction).name;
+
+                return new CareerEventModel(new EventModel(
+                    `You save a health tourist from a costly, serpent-related mistake. Gain an ally in the ${factionName} faction.`,
+                    "",
+                    `You save a health tourist from a costly, serpent-related mistake. Gain an ally in the ${factionName} faction.`
+                ));
+            }
+            case 9:
+                return new CareerEventModel(new EventModel(
+                    "You embrace the faith’s teachings wholeheartedly. Some would say a little too much. You may choose Hassassin Fiday or Exemplar as your next career without making a hazard test.",
+                    "Zealot",
+                    "You embrace the faith’s teachings wholeheartedly. Some would say a little too much."
+                ),
+                    () => {
+                        character.freeCareers.push(Career.HassassinFidayHaqqislam);
+                        character.freeCareers.push(Career.HassassinExemplar);
+                    });
+            case 10:
+                return new CareerEventModel(new EventModel(
+                    "While on a solitary desert pilgrimage, you happen across a prominent figure in a bad way; your quick thinking and natural knowledge saves their life. Gain 1 rank in Survival. You may select the Akbar Doctor career without making a hazard test.",
+                    "",
+                    "While on a solitary desert pilgrimage, you happen across a prominent figure in a bad way; your quick thinking and natural knowledge saves their life.",
+                    "IncreaseSurvival"
+                ),
+                    () => { character.freeCareers.push(Career.AkbarDoctor); });
+            case 11:
+                return new CareerEventModel(new EventModel(
+                    "You participate in the Ocean of Fire race. Gain 1 rank in either Animal Handling or Pilot.",
+                    "",
+                    "You participate in the Ocean of Fire race.",
+                    "IncreaseAnimal Handling|Pilot"
+                ));
+            case 12:
+                return new CareerEventModel(new EventModel(
+                    "You’re caught in the middle of a three-way grey market espionage tangle; someone needs to take the fall. You must pass a hazard test or become Fired.",
+                    "",
+                    "You’re caught in the middle of a three-way grey market espionage tangle; someone needs to take the fall.",
+                    "HazardTestOrFired"
+                ));
+            case 13:
+                return new CareerEventModel(new EventModel(
+                    "A Silk Lord bequeaths you a portion of their wealth. Are you related? If not, why have they chosen you? Gain 5 assets.",
+                    "",
+                    "A Silk Lord bequeaths you a portion of their wealth. Are you related? If not, why have they chosen you?"
+                ),
+                    () => { character.assets += 5; });
+            case 14: {
+                const assets = DiceRoller.rollSpecial(4, 0).hits;
+
+                return new CareerEventModel(new EventModel(
+                    `Travelling on the Silk Route maglev, your train is ambushed in the Azar Desert. The fighting is brief, but intense. Your Vigour is reduced by 1 while you recover. You gain ${assets} assets has hazard pay.`,
+                    "",
+                    `Travelling on the Silk Route maglev, your train is ambushed in the Azar Desert. The fighting is brief, but intense.`
+                ),
+                    () => {
+                        character.vigourReduction++;
+                        character.assets += assets;
+                    });
+            }
+            case 15: {
+                const faction = FactionsHelper.generateFaction(false, true);
+                const factionName = FactionsHelper.getFaction(faction).name;
+
+                return new CareerEventModel(new EventModel(
+                    `Walking through Khadijah’s Garden of Dreaming Pillars, you chance across a secret meeting. What was it? You gain a rival in the ${factionName} faction. Lose 3 assets as they extract a modicum of financial revenge on you.`,
+                    "",
+                    `Walking through Khadijah’s Garden of Dreaming Pillars, you chance across a secret meeting. What was it? You gain a rival in the ${factionName} faction.`
+                ),
+                    () => { character.assets = Math.max(0, character.assets - 3); });
+            }
+            case 16:
+                return new CareerEventModel(new EventModel(
+                    "You volunteered for experimental medical treatments. They went well. Increase your Vigour by 1.",
+                    "",
+                    "You volunteered for experimental medical treatments. They went well."
+                ),
+                    () => { character.vigourReduction--; });
+            case 17:
+                return new CareerEventModel(new EventModel(
+                    "You volunteered for experimental medical treatments. They went badly. Decrease your Vigour by 1.",
+                    "",
+                    "You volunteered for experimental medical treatments. They went badly."
+                ),
+                    () => { character.vigourReduction++; });
+            case 18:
+                if (isUnemployed) {
+                    return this.generateEvent();
+                }
+                return new CareerEventModel(new EventModel(
+                    "You are fired. What did you do? Why did you feel you had to do it?",
+                    "Fired",
+                    "You are fired. What did you do? Why did you feel you had to do it?",
+                    "Fired"
+                ));
+            case 19:
+                if (character.isAlMustaslaha()) {
+                    return new CareerEventModel(new EventModel(
+                        "You were murdered, or so the perpetrator thought. On the brink of death you are returned to life. Who was blamed for this, and who do you hold responsible?",
+                        "Murdered",
+                        "You were murdered, or so the perpetrator thought. On the brink of death you are returned to life. Who was blamed for this, and who do you hold responsible?"
+                    ),
+                        () => {
+                            character.vigourReduction += 2;
+                            character.resolveReduction--;
+                        });
+                }
+                else {
+                    return new CareerEventModel(new EventModel(
+                        "You are murdered. Who was blamed for this, and who do you hold responsible? Your character died and was Resurrected.",
+                        "Murdered",
+                        "You are murdered. Who was blamed for this, and who do you hold responsible?",
+                        "Resurrection"
+                    ));
+                }
+            case 20:
+                return new CareerEventModel(new EventModel(
+                    "If you see the Lion’s Teeth, don’t assume that it’s smiling. And right now, you’re seeing a lot of teeth.",
+                    "",
+                    "",
+                    "ChineseCurse"
+                ));
+        }*/
+    }
+
+    private rollOnJapanTable(roll: number, isUnemployed: boolean): CareerEventModel {
+        switch (roll) {
+            case 1:
+                return new CareerEventModel(new EventModel(
+                    "You competed in a Jopok-run martial arts tournament. The competition was fierce, and the medical care was iffy at best.? Gain 1 rank in Close Combat, but reduce Vigour by 1, as poorly-treated injuries leave you weakened.",
+                    "",
+                    "You competed in a Jopok-run martial arts tournament. The competition was fierce, and the medical care was iffy at best."
+                ),
+                    () => { character.vigourReduction++; });
+            case 2:
+                return new CareerEventModel(new EventModel(
+                    "A family member commits deeply to the Otaku subculture. While they don’t ask for help, you know they’re at risk, and barely scraping by. Gain a debt worth 10 Assets or gain the character trait: Cold-Blooded.",
+                    "",
+                    "A family member commits deeply to the Otaku subculture. While they don’t ask for help, you know they’re at risk, and barely scraping by."
+                ));
+            case 3:
+                return new CareerEventModel(new EventModel(
+                    "On their way to meet with you, your contact is killed in a riot started by Rantan Services. Gain a rival in the Ōnishi Ninja clan.",
+                    "",
+                    "On their way to meet with you, your contact is killed in a riot started by Rantan Services.",
+                    ""
+                ));
+            case 4:
+                return new CareerEventModel(new EventModel(
+                    "In recognition of your contributions to society, your Hăo lù citizenship rating skyrockets. Increase Social Status by one step.",
+                    "",
+                    "In recognition of your contributions to society, your Hăo lù citizenship rating skyrockets.",
+                    ""
+                ),
+                () => { SocialClassesHelper.increaseSocialClass(); });
+            case 5:
+                return new CareerEventModel(new EventModel(
+                    "An assignment with Tenchō Investment Services blows up in your face. Literally. Through the smoke, a silhouette nods at you. Gain Trait: Paranoid. You may reduce the cost of hazarding the Ninja career by one step.",
+                    "Paranoid",
+                    "An assignment with Tenchō Investment Services blows up in your face. Literally. Through the smoke, a silhouette nods at you."
+                ),
+                    () => {
+                        character.freeCareers.push(Career.Ninja);
+                    });
+            case 6:
+                return new CareerEventModel(new EventModel(
+                    "Obsessed with Aristeia!, you enter an amateur tryout. It does not go well. Gain Trait: Old Wound",
+                    "OldWound",
+                    "Obsessed with Aristeia!, you enter an amateur tryout. It does not go well."
+                ),
+                    () => {});
+            case 7:
+                return new CareerEventModel(new EventModel(
+                    "You spot a Yănjīng Agent speaking with your superior. Coming in for work the next day, it’s as though you never existed. What happened?",
+                    "",
+                    "You spot a Yănjīng Agent speaking with your superior. Coming in for work the next day, it’s as though you never existed. What happened?",
+                    "Fired"
+                ),
+                    () => {
+                        character.freeCareers.push(Career.YănjīngAgent);
+                        character.freeCareers.push(Career.WuMing);
+                     });
+            case 8: {
+                return new CareerEventModel(new EventModel(
+                    `You run into an old friend you haven’t seen in years. Their new career as a Jopok seems to be lucrative, if dishonorable and violent. Gain a Submondo contact. You may freely join the Submondo faction at any time.`,
+                    "",
+                    `You run into an old friend you haven’t seen in years. Their new career as a Jopok seems to be lucrative, if dishonorable and violent.`
+                ),
+                    () => {}); //TODO FreeSubmondoSwitchAnytime
+            }
+            case 9:
+                return new CareerEventModel(new EventModel(
+                    "During a trip to the Wei River, you rescue a traveler caught in a flood. To your surprise, they’re a prominent Party member. Gain an ally in the Party. You can change your Heritage to Party at this time.",
+                    "",
+                    "During a trip to the Wei River, you rescue a traveler caught in a flood. To your surprise, they’re a prominent Party member."
+                ),
+                    () => {}); //TODO CanSwitch Heritage=Party
+            case 10:
+                return new CareerEventModel(new EventModel(
+                    "Your citizenship metric slips dramatically. True or not, you know who you blame. Reduce Social Status by one step. Gain a rival that you hold responsible.",
+                    "",
+                    "Your citizenship metric slips dramatically. True or not, you know who you blame.",
+                    ""
+                ),
+                    () => { SocialClassesHelper.reduceSocialClass(); });
+            case 11:
+                return new CareerEventModel(new EventModel(
+                    "Obsessed with Aristeia!, you enter a tryout. Your gear is expensive, but it goes quite well. Gain debt worth 5 Assets but increase Acrobatics by 1.",
+                    "",
+                    "Obsessed with Aristeia!, you enter a tryout. Your gear is expensive, but it goes quite well.",
+                    "IncreaseAcrobatics"
+                ));
+            case 12:
+                return new CareerEventModel(new EventModel(
+                    "During a visit to Zijinchéng, you wander off the beaten path, overhearing some truly salacious gossip. "+this.blackmailMaterialText(),
+                    "",
+                    "During a visit to Zijinchéng, you wander off the beaten path, overhearing some truly salacious gossip.",
+                    ""
+                ),
+                    () => {});
+            case 13:
+                return new CareerEventModel(new EventModel(
+                    "When your career prospects become bogged down by the Imperial Civil Service, a cōngmíng de hóuzi offers to make it all go away. Either gain a 4 Asset debt, pass an Average (D1) hazard test for your current career, or be Fired.",
+                    "",
+                    "When your career prospects become bogged down by the Imperial Civil Service, a cōngmíng de hóuzi offers to make it all go away.",
+                    "BribeHazardTestOrFired" //TODO Bribe
+                ),
+                    () => {});
+            case 14: {
+                const assets = DiceRoller.rollSpecial(4, 0).hits;
+
+                return new CareerEventModel(new EventModel(
+                    `During a festival, a piece of the scenery collapses on you. The Party has ruled it an accident. What do you think? Attacks that hit ${this.getBodyPart()} cause +1§ bonus damage.`,
+                    "",
+                    `During a festival, a piece of the scenery collapses on you. The Party has ruled it an accident. What do you think?`
+                ),
+                    () => {});
+            }
+            case 15: {
+
+                return new CareerEventModel(new EventModel(
+                    `Pushed to your breaking point, you snap, lashing out against the Party. What brought this on? And how big a mess did you make? Change your status to Dissident. You may freely select the Subversive career at any point during the Lifepath.`,
+                    "",
+                    `Pushed to your breaking point, you snap, lashing out against the Party. What brought this on? And how big a mess did you make?`
+                ),
+                    () => {
+                        character.freeCareers.push(Career.Subversive);
+                        SocialClassesHelper.applySocialClass(SocialClass.Dissident);
+                    });
+            }
+            case 16:
+                return new CareerEventModel(new EventModel(
+                    "A family member becomes a Kuang Shi. While you’ll never be entirely sure, you’ve probably watched them die, streaming live to thunderous applause. Reduce Social Status by one step. Increase Resolve by 1.",
+                    "",
+                    "A family member becomes a Kuang Shi. While you’ll never be entirely sure, you’ve probably watched them die, streaming live to thunderous applause."
+                ),
+                    () => {
+                        character.resolve++; 
+                        SocialClassesHelper.reduceSocialClass();
+                    });
+            case 17:
+                return new CareerEventModel(new EventModel(
+                    "Summoned to the Imperial Court, you acquit yourself honourably though the cost is steep. Gain a debt worth 3 Assets. Gain one rank in Psychology.",
+                    "",
+                    "Summoned to the Imperial Court, you acquit yourself honourably though the cost is steep.",
+                    "IncreasePsychology"
+                ),
+                    () => {});
+            case 18:
+                if (isUnemployed) {
+                    return this.generateEvent();
+                }
+                return new CareerEventModel(new EventModel(
+                    "You speak out against your supervisor. You were right; they were well-connected. You are Fired!",
+                    "Fired",
+                    "You speak out against your supervisor. You were right; they were well-connected.",
+                    "Fired"
+                ));
+            case 19:
+                return new CareerEventModel(new EventModel(
+                    "The official Party line ruled your death an accident. But you know the truth. Your character died and was Resurrected.",
+                    "Murdered",
+                    "The official Party line ruled your death an accident. But you know the truth.",
+                    "Resurrection"
+                ));
+            case 20:
+                return new CareerEventModel(new EventModel(
+                    "Better to be a dog in peaceful times than a human in a time of chaos. Well, the Dog Days are upon you, and they herald Interesting Times.",
+                    "",
+                    ""
+                ));// TODO tripple event
+        }
+    }
+
     private rollOnPanOceaniaTable(roll: number, isUnemployed: boolean): CareerEventModel {
         switch (roll) {
             case 1:
@@ -1485,7 +1872,7 @@ export class CareerEvents {
                 return new CareerEventModel(new EventModel(
                     "You pay the Price of Ambition: things are about to get interesting. ",
                     "",
-                    ""));
+                    ""));//TODO triple event
         }
     }
 
@@ -1610,9 +1997,9 @@ export class CareerEvents {
                     "Resurrection"));
             case 20:
                 return new CareerEventModel(new EventModel(
+                    "Some of your first memories are assurances that everything will be fine so long as no Unexpected Complications arise. Of course, they always do. Roll again three times on the Career Event Table for this career phase",
                     "",
-                    "",
-                    ""));
+                    "")); //TODO triple event
         }
     }
 
@@ -1739,6 +2126,53 @@ export class CareerEvents {
                     "Resurrection"));
             }
         }
+    }
+
+    private blackmailMaterialText(): string {
+        var faction1 = FactionsHelper.generateFaction(false, true);
+        var faction2 = FactionsHelper.generateFaction(false, true);
+
+        while (faction2 === faction1) {
+            faction2 = FactionsHelper.generateFaction(false, true);
+        }
+
+        var faction1Name = FactionsHelper.getFaction(faction1).name;
+        var faction2Name = FactionsHelper.getFaction(faction2).name;
+
+        return `Gained Blackmail Material: You have been given proof that the ${faction1Name} faction has committed misdeeds against the ${faction2Name} faction. Any of the involved parties will grant a favour (or 2 Assets in hush money) for your silence.`;
+    }
+
+    private getBodyPart(): string {
+        let roll = Math.floor(Math.random() * 20) + 1;
+        switch(roll){
+            case 1:
+            case 2:
+                return "head"
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+                return "torso"
+            case 9:
+            case 10:
+            case 11:
+                return "left arm"
+            case 12:
+            case 13:
+            case 14:
+                return "right arm"
+            case 15:
+            case 16:
+            case 17:
+                return "left leg"
+            case 18:
+            case 19:
+            case 20:
+                return "right leg"
+        }
+        return "Any-body-part";
     }
 }
 
